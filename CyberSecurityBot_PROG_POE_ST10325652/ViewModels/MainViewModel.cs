@@ -1,0 +1,128 @@
+﻿using CyberSecurityBot_PROG_POE_ST10325652.CoreLogic;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using CyberSecurityBot_PROG_POE_ST10325652;
+
+namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
+{
+    #region ICommand implementation that takes delefates for Execute and CanExecute methods.
+    public class RelayCommand : ICommand
+    {
+        private readonly Action _execute;
+        private readonly Func<bool>? _canExecute;
+
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _canExecute = canExecute;
+        }
+
+        public bool CanExecute(object? parameter) =>
+            _canExecute?.Invoke() ?? true;
+
+        public void Execute(object? parameter) =>
+            _execute();
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
+    }
+    #endregion
+
+    public class MainViewModel : INotifyPropertyChanged
+    {
+        // INotifyPropertyChanged boilerplate
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        // OnPropertyChnaged method how each property notifies the UI of changes
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //// State flags 
+        //private bool _isShowingWelcome;
+        //public bool IsShowingWelcome
+        //{
+        //    get => _isShowingWelcome;
+        //    set { _isShowingWelcome = value; OnPropertyChanged(nameof(IsShowingWelcome)); }
+        //}
+
+        //private bool _isAskingName;
+        //public bool IsAskingName
+        //{
+        //    get => _isAskingName;
+        //    set { _isAskingName = value; OnPropertyChanged(nameof(IsAskingName)); }
+        //}
+
+        //private bool _isInChat;
+        //public bool IsInChat
+        //{
+        //    get => _isInChat;
+        //    set { _isInChat = value; OnPropertyChanged(nameof(IsInChat)); }
+        //}
+
+
+        private object? _currentView;
+        public object? CurrentView
+        {
+            get => _currentView;
+            set
+            {
+                _currentView = value;
+                OnPropertyChanged(nameof(CurrentView)); // 💡 This triggers the UI update
+            }
+        }
+
+        public MainViewModel()
+        {
+            var welcomeVM = new WelcomeViewModel();
+
+            // Hook up navigation action
+            welcomeVM.OnRequestNavigateToChat = () =>
+            {
+                CurrentView = new ChatView { DataContext = new ChatViewModel() }; 
+            };
+
+            CurrentView = new WelcomeView { DataContext = welcomeVM};
+        }
+
+
+
+        //#region Properties
+
+        //// Sentiment Responses
+        //private string? _sentimentResponse;
+        //public string? SentimentResponse
+        //{
+        //    get { return _sentimentResponse; }
+        //    set { _sentimentResponse = value; OnPropertyChanged(nameof(SentimentResponse)); }
+        //}
+
+       
+        //#endregion
+
+        //public MainViewModel()
+        //{
+        //    IsShowingWelcome = true;
+        //    IsAskingName = false;
+        //    IsInChat = false;
+
+        //    ShowWelcomeCommand.Execute(null);
+        //}
+
+        
+        //        IsShowingWelcome = false;
+        //        IsAskingName = true;
+        //    });
+
+       
+    }
+}

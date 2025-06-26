@@ -1,0 +1,21 @@
+﻿<Application x:Class="CyberSecurityBot_PROG_POE_ST10325652.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CyberSecurityBot_PROG_POE_ST10325652"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- 🔵 User message bubble -->
+        <Style x:Key="UserBubble" TargetType="Border">
+            <Setter Property="Background" Value="#0078D7"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <!-- ⚫ Bot message bubble -->
+        <Style x:Key="BotBubble" TargetType="Border">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Application.Resources>
+</Application>
