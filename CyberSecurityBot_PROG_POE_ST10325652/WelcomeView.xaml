@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="CyberSecurityBot_PROG_POE_ST10325652.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CyberSecurityBot_PROG_POE_ST10325652"
+             xmlns:conv="clr-namespace:CyberSecurityBot_PROG_POE_ST10325652.Converters"
+             mc:Ignorable="d" >
+
+    <UserControl.Resources>
+        <conv:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="0">
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBlock Text="{Binding AsciiArtLock}" FontFamily="Consolas" FontSize="14" Foreground="SteelBlue" Margin="0,0,40,0" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding AsciiArtMessage}" FontFamily="Consolas" FontSize="14" Foreground="DarkMagenta" Margin="0,0,20,0" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <TextBlock Text="{Binding GreetingText}" Margin="20,20,0,0" FontFamily="Consolas" FontSize="19" Foreground="White"/>
+
+        <TextBlock Text="Please enter your name:" Margin="20,20,0,0" FontFamily="Consolas" FontSize="19" Foreground="White"/>
+        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBox Text="{Binding NameInput, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left" Margin="20,20,20,20" FontFamily="Consolas" FontSize="19" Foreground="Black"/>
+            <TextBlock Text="{Binding NameError}"  Width="300" HorizontalAlignment="Left" Margin="0,5,0,0" FontFamily="Consolas" FontSize="19" Foreground="Red" Visibility="{Binding NameError, Converter={StaticResource StringToVisibilityConverter}}"/>
+        </StackPanel>
+        
+        <Button Content="Submit Name" Command="{Binding SubmitNameCommand}" HorizontalAlignment="Left" Margin="20,20,0,0" Width="100" Height="30" BorderThickness="2" BorderBrush="Cyan" Foreground="Black"/>
+
+        <TextBlock Text="{Binding PersonalGreeting}" FontSize="20" FontWeight="Bold" Foreground="Green" HorizontalAlignment="Center" Margin="20,10,0,0"/>
+    </StackPanel>
+</UserControl>
