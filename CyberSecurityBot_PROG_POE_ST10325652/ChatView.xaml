@@ -46,6 +46,6 @@
             <Button Content="Send" Command="{Binding AskQuestionCommand}" 
                     Width="80" Height="30" Background="Cyan"/>
         </StackPanel>
-
+        
     </Grid>
 </UserControl>

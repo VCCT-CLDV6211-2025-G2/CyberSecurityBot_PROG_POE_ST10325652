@@ -2,9 +2,11 @@
  * Michaela Ferraris
  * ST10325652
  * PROG6211 POE part 1
- */using System;
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using FuzzySharp;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
 {
@@ -13,9 +15,17 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
     {
         private readonly List<Topic> Topics;
 
+        public string Name { get; set; }
+        public string Definition { get; set; }
+        public List<string> Keywords { get; set; }
+        public Dictionary<string, string> StandardAnswers { get; set; }
+
         #region //Constructor to initialize the TopicManager with predefined topics
         public TopicManager()
         {
+            Keywords = new List<string>();
+            StandardAnswers = new Dictionary<string, string>();
+
             //Initialize the list of topics with predefined data
             //Each topic has a name, definition, keywords, tips, and standard answers
             Topics = new List<Topic>
@@ -186,9 +196,51 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
                 }
 
             };
+
         }
+        public string GetBestResponse(string userInput)
+        {
+            string bestMatch = null;
+            int highestScore = 0;
+
+            // Search standard questions
+            foreach (var question in StandardAnswers.Keys)
+            {
+                int score = Fuzz.Ratio(userInput.ToLower(), question.ToLower());
+                if (score > highestScore)
+                {
+                    highestScore = score;
+                    bestMatch = question;
+                }
+            }
+
+            // If close enough match found in standard answers
+            if (highestScore >= 80)  // Adjust threshold as needed
+            {
+                return StandardAnswers[bestMatch];
+            }
+
+            // Now try keyword matching
+            foreach (var keyword in Keywords)
+            {
+                int score = Fuzz.PartialRatio(userInput.ToLower(), keyword.ToLower());
+                if (score > highestScore)
+                {
+                    highestScore = score;
+                    bestMatch = keyword;
+                }
+            }
+
+            if (highestScore >= 75)
+            {
+                return $"That sounds like it’s related to: {bestMatch}. Here's what I can tell you: {Definition}";
+            }
+
+            return "Sorry, I’m not sure what you mean. Try rephrasing or choosing a topic.";
+        }
+
         #endregion
-//--------------------------------------------------------------------------------------------------------------------------------------//
+        //--------------------------------------------------------------------------------------------------------------------------------------//
 
         //Method that returns a list of all topic names when to user chooses to select a topic from the spectre console list
         public List<string> GetAllTopicNames()
@@ -255,8 +307,9 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
             if (standardAnswer != null)
                 return standardAnswer;
 
+            return topic.Definition;
             //If no match is found, return a default message
-            return "That's a great question. Try rephrasing or asking for a tip!";
+            //return "That's a great question. Try rephrasing or asking for a tip!";
         }
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -267,6 +320,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
             return source?.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 //--------------------------------------------------------------------------------------------------------------------------------------//
+
 
     }
 }

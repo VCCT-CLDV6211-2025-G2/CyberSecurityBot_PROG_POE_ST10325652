@@ -36,40 +36,9 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
     }
     #endregion
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
-        // INotifyPropertyChanged boilerplate
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        // OnPropertyChnaged method how each property notifies the UI of changes
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        //// State flags 
-        //private bool _isShowingWelcome;
-        //public bool IsShowingWelcome
-        //{
-        //    get => _isShowingWelcome;
-        //    set { _isShowingWelcome = value; OnPropertyChanged(nameof(IsShowingWelcome)); }
-        //}
-
-        //private bool _isAskingName;
-        //public bool IsAskingName
-        //{
-        //    get => _isAskingName;
-        //    set { _isAskingName = value; OnPropertyChanged(nameof(IsAskingName)); }
-        //}
-
-        //private bool _isInChat;
-        //public bool IsInChat
-        //{
-        //    get => _isInChat;
-        //    set { _isInChat = value; OnPropertyChanged(nameof(IsInChat)); }
-        //}
-
-
+   
         private object? _currentView;
         public object? CurrentView
         {
@@ -81,14 +50,39 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             }
         }
 
+
         public MainViewModel()
         {
             var welcomeVM = new WelcomeViewModel();
+            var sharedChatVM = new ChatViewModel();
 
-            // Hook up navigation action
+            // Hook up navigation from ChatViewModel to TaskView
+            sharedChatVM.OnRequestNavigateToTasks = () =>
+            {
+                CurrentView = new TaskView { DataContext = sharedChatVM };
+            };
+
+            // Hook up navigation from WelcomeViewModel to ChatView
             welcomeVM.OnRequestNavigateToChat = () =>
             {
-                CurrentView = new ChatView { DataContext = new ChatViewModel() }; 
+                CurrentView = new ChatView { DataContext = sharedChatVM }; 
+            };
+
+            // Hook up navigation from TaskView to ChatView
+            sharedChatVM.OnRequestNavigateToChat = () =>
+            {
+                CurrentView = new ChatView { DataContext = sharedChatVM };
+            };
+
+            sharedChatVM.OnRequestNavigateToQuiz = () =>
+            {
+                var quizVM = new QuizViewModel();
+                quizVM.OnRequestNavigateToChat = () =>
+                {
+                    CurrentView = new ChatView { DataContext = sharedChatVM };
+                };
+
+                CurrentView = new QuizView { DataContext = quizVM };
             };
 
             CurrentView = new WelcomeView { DataContext = welcomeVM};
@@ -96,7 +90,6 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 
 
 
-        //#region Properties
 
         //// Sentiment Responses
         //private string? _sentimentResponse;
@@ -106,23 +99,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
         //    set { _sentimentResponse = value; OnPropertyChanged(nameof(SentimentResponse)); }
         //}
 
-       
-        //#endregion
-
-        //public MainViewModel()
-        //{
-        //    IsShowingWelcome = true;
-        //    IsAskingName = false;
-        //    IsInChat = false;
-
-        //    ShowWelcomeCommand.Execute(null);
-        //}
-
-        
-        //        IsShowingWelcome = false;
-        //        IsAskingName = true;
-        //    });
-
+     
        
     }
 }

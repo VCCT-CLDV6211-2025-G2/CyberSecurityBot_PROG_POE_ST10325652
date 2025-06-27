@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
+namespace CyberSecurityBot_PROG_POE_ST10325652.Models
 {
     public class ChatMessage
     {

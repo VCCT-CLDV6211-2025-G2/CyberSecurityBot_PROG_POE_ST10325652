@@ -9,11 +9,8 @@ using CyberSecurityBot_PROG_POE_ST10325652.CoreLogic;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
-    public class WelcomeViewModel : INotifyPropertyChanged
+    public class WelcomeViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
         // Greeting text
         private string? _greetingText;
@@ -129,8 +126,8 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             // Call a method in MainViewModel to go to ChatView 
             OnRequestNavigateToChat?.Invoke();
 
-
         });
+
 
     }
 }

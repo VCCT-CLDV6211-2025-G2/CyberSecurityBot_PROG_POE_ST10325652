@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace CyberSecurityBot_PROG_POE_ST10325652
 {
     /// <summary>
-    /// Interaction logic for ChatView.xaml
+    /// Interaction logic for TaskView.xaml
     /// </summary>
-    public partial class ChatView : UserControl
+    public partial class TaskView : UserControl
     {
-        public ChatView()
+        public TaskView()
         {
             InitializeComponent();
             DataContext = new ChatViewModel();
