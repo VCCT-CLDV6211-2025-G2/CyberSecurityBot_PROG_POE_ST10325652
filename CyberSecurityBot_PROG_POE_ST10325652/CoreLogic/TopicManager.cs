@@ -228,7 +228,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
                 {
                     highestScore = score;
                     bestMatch = keyword;
-                }
+        }
             }
 
             if (highestScore >= 75)
@@ -240,7 +240,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.CoreLogic
         }
 
         #endregion
-        //--------------------------------------------------------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------------------------------------------------------------------------//
 
         //Method that returns a list of all topic names when to user chooses to select a topic from the spectre console list
         public List<string> GetAllTopicNames()

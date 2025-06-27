@@ -15,6 +15,9 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
     public class ChatViewModel : BaseViewModel
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string prop) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
         // Instantiating TopicManager
         private readonly TopicManager _topicManager = new TopicManager();
@@ -78,7 +81,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                     Messages.Add(new ChatMessage("I didn't understand that topic. Try rephrasing.", "Bot"));
                 }
 
-                UserQuestion = "";
+                UserQuestion = ""; 
             });
 
         public ObservableCollection<ChatMessage> Messages { get; } = new();
@@ -177,6 +180,6 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 
 
         public Action? OnRequestNavigateToQuiz { get; set; }
-
+      
     }
 }
