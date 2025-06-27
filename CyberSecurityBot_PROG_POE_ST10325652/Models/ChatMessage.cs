@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.Models
 {
+    // Represents a chat message in the conversation between the user and the bot 
     public class ChatMessage
     {
         public string Text { get; set; } = "";

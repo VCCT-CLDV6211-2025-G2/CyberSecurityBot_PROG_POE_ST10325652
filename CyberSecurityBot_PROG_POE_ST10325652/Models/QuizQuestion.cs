@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.Models
 {
+    // Represents a quiz question in the Cyber Security Bot application
     public class QuizQuestion
     {
         public string QuestionText { get; set; } = string.Empty;

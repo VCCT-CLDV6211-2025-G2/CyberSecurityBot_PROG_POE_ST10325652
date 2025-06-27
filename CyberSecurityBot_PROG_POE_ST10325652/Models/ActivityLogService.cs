@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.Models
 {
+    //Global class for storing timestamps and making them accessible across all views for displaying them in the activity log
     public static class ActivityLogService
     {
+         
         public static ObservableCollection<string> Logs { get; } = new();
 
         public static void AddEntry(string message)

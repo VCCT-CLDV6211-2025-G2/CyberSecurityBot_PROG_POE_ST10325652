@@ -11,6 +11,7 @@ using CyberSecurityBot_PROG_POE_ST10325652;
 namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
     #region ICommand implementation that takes delefates for Execute and CanExecute methods.
+    // Used to connect UI buttons to methods in ViewModels using ICommand.
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
@@ -38,7 +39,9 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 
     public class MainViewModel : BaseViewModel
     {
+        // This is the main view model that manages navigation between different views in the application.
 
+        // It holds the current view and provides methods to switch between views based on user actions.
         private object? _currentView;
         public object? CurrentView
         {
@@ -46,13 +49,14 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             set
             {
                 _currentView = value;
-                OnPropertyChanged(nameof(CurrentView)); // 💡 This triggers the UI update
+                OnPropertyChanged(nameof(CurrentView)); // This triggers the UI update
             }
         }
 
-
+        // Constructor for MainViewModel
         public MainViewModel()
         {
+            // Initialize the view models for different views
             var welcomeVM = new WelcomeViewModel();
             var sharedChatVM = new ChatViewModel();
 
@@ -74,6 +78,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 CurrentView = new ChatView { DataContext = sharedChatVM };
             };
 
+            // Hook up navigation from ChatViewModel to QuizView and ActivityLogView
             sharedChatVM.OnRequestNavigateToQuiz = () =>
             {
                 var quizVM = new QuizViewModel();
@@ -85,6 +90,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 CurrentView = new QuizView { DataContext = quizVM };
             };
 
+            // Hook up navigation from ChatViewModel to ActivityLogView
             sharedChatVM.OnRequestNavigateToActivityLog = () =>
             {
                 var logVM = new ActivityLogViewModel();
@@ -102,3 +108,5 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
        
     }
 }
+
+//https://www.w3schools.com/cs/index.php

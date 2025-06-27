@@ -4,6 +4,7 @@ using System.Windows.Data;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.Converters
 {
+    // This converter checks if the selected index matches a specified index.
     public class IndexMatchConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.Models
 {
+    // Represents a task in the Cyber Security Bot application
     public class CyberTask
     {
         public string Title { get; set; }

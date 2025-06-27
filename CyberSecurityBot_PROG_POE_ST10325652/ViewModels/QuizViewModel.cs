@@ -11,18 +11,24 @@ using System.ComponentModel;
 
 namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
+    // This ViewModel handles the quiz functionality, including displaying questions, tracking answers, and calculating scores.
     public class QuizViewModel : BaseViewModel
     {
+
+        // Navigation commands
         public Action? OnRequestNavigateToChat { get; set; }
         public ICommand ReturnToChatCommand => new RelayCommand(() =>
         {
             OnRequestNavigateToChat?.Invoke();
         });
 
+        // Collection of quiz questions
         public ObservableCollection<QuizQuestion> Questions { get; } = new();
+        // Current question index and score tracking
         private int _currentIndex = 0;
         private int _score = 0;
 
+        // Feedback message to show after each answer submission
         private string? _feedbackMessage;
         public string? FeedbackMessage
         {
@@ -30,8 +36,10 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             set { _feedbackMessage = value; OnPropertyChanged(nameof(FeedbackMessage)); }
         }
 
+        // Current question property that returns the question at the current index
         public QuizQuestion? CurrentQuestion => _currentIndex < Questions.Count ? Questions[_currentIndex] : null;
 
+        // Selected option index to track which option the user has selected
         private int _selectedOptionIndex = -1;
         public int SelectedOptionIndex
         {
@@ -39,6 +47,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             set { _selectedOptionIndex = value; OnPropertyChanged(nameof(SelectedOptionIndex)); }
         }
 
+        // Command to submit the answer and check correctness
         public ICommand SubmitAnswerCommand => new RelayCommand(() =>
         {
             if (CurrentQuestion == null) return;
@@ -69,17 +78,20 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             });
         });
 
+        // Constructor for QuizViewModel that initializes the questions
         public QuizViewModel()
         {
             LoadQuestions();
         }
 
+        // Method to show the final score in a message box when the quiz is completed
         private void ShowFinalScore()
         {
             MessageBox.Show($"You scored {_score}/{Questions.Count}. " +
                 (_score >= 7 ? "Great job! You're a cybersecurity pro!" : "Keep learning to stay safe online."), "Quiz Completed");
         }
 
+        // Method to load quiz questions into the Questions collection
         private void LoadQuestions()
         {
             Questions.Add(new QuizQuestion
