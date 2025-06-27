@@ -8,7 +8,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int selectedIndex && parameter is string indexStr && int.TryParse(indexStr, out int index))
+            if (value is int selectedIndex && parameter != null && int.TryParse(parameter.ToString(), out int index))
             {
                 return selectedIndex == index;
             }
@@ -17,7 +17,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool isChecked && isChecked && parameter is string indexStr && int.TryParse(indexStr, out int index))
+            if (value is bool isChecked && isChecked && parameter != null && int.TryParse(parameter.ToString(), out int index))
             {
                 return index;
             }

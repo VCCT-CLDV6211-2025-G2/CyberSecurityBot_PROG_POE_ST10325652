@@ -15,9 +15,6 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
     public class ChatViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
         // Instantiating TopicManager
         private readonly TopicManager _topicManager = new TopicManager();
@@ -67,8 +64,10 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                     Messages.Add(new ChatMessage("Sure! Taking you to the quiz now.", "Bot"));
                     await Task.Delay(1000);
                     OnRequestNavigateToQuiz?.Invoke();
+                    UserQuestion = "";
                     return;
                 }
+
 
                 var matchedTopic = _topicManager.MatchTopic(UserQuestion);
                 if (matchedTopic != null)
@@ -81,7 +80,27 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                     Messages.Add(new ChatMessage("I didn't understand that topic. Try rephrasing.", "Bot"));
                 }
 
-                UserQuestion = ""; 
+                UserQuestion = "";
+
+                // Tip detection
+                if (UserQuestion.ToLower().Contains("tip") || UserQuestion.ToLower().Contains("advice"))
+                {
+                    string tip = _topicManager.GetRandomTip(matchedTopic);
+                    Messages.Add(new ChatMessage($"💡 Tip: {tip}", "Bot"));
+                    UserQuestion = "";
+                    return;
+                }
+
+                // Standard answer matching
+                string standardAnswer = _topicManager.GetStandardAnswer(matchedTopic, UserQuestion);
+                if (!string.IsNullOrEmpty(standardAnswer))
+                {
+                    Messages.Add(new ChatMessage(standardAnswer, "Bot"));
+                    UserQuestion = "";
+                    return;
+                }
+
+
             });
 
         public ObservableCollection<ChatMessage> Messages { get; } = new();

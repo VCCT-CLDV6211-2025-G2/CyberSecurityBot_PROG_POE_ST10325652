@@ -14,6 +14,10 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
     public class QuizViewModel : BaseViewModel
     {
         public Action? OnRequestNavigateToChat { get; set; }
+        public ICommand ReturnToChatCommand => new RelayCommand(() =>
+        {
+            OnRequestNavigateToChat?.Invoke();
+        });
 
         public ObservableCollection<QuizQuestion> Questions { get; } = new();
         private int _currentIndex = 0;
@@ -52,7 +56,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
             // Advance after short delay
             Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                await Task.Delay(2000);
+                await Task.Delay(5000);
                 _currentIndex++;
                 SelectedOptionIndex = -1;
                 FeedbackMessage = string.Empty;

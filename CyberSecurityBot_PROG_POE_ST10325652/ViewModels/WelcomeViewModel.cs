@@ -11,9 +11,6 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 {
     public class WelcomeViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 
         // Greeting text
         private string? _greetingText;

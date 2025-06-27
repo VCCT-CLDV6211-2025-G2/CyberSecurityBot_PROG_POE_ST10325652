@@ -13,7 +13,7 @@ namespace CyberSecurityBot_PROG_POE_ST10325652
         public QuizView()
         {
             InitializeComponent();
-            DataContext = new QuizView();
+            
         }
     }
 }
