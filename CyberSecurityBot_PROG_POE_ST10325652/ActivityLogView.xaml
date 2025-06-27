@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="CyberSecurityBot_PROG_POE_ST10325652.ActivityLogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CyberSecurityBot_PROG_POE_ST10325652"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#1E1E2F" >
+        <StackPanel>
+            <TextBlock Text="📜 Activity Log" FontSize="20" FontWeight="Bold" Foreground="White" Margin="0 0 0 10"/>
+            <ListBox ItemsSource="{Binding LogEntries}" 
+                     Background="#2D2D40" 
+                     Foreground="White" 
+                     BorderBrush="#444" 
+                     BorderThickness="1" 
+                     FontFamily="Consolas" 
+                     Height="350"/>
+            <Button Content="⬅ Back to Chat"
+                    Command="{Binding ReturnToChatCommand}"
+                    HorizontalAlignment="Left"
+                    Width="150"
+                    Margin="10 20 0 0"
+                    Background="Blue"
+                    FontSize="13"
+                    Foreground="White"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

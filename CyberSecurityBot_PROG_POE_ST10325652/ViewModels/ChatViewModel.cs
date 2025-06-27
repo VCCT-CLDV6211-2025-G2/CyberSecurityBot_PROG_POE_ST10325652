@@ -47,12 +47,24 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 }
 
                 Messages.Add(new ChatMessage(UserQuestion, "User"));
+                ActivityLogService.AddEntry($"User asked: {UserQuestion}");
+
+                if (UserQuestion.ToLower().Contains("show log") || UserQuestion.ToLower().Contains("activity"))
+                {
+                    Messages.Add(new ChatMessage("Opening activity log...", "Bot"));
+                    ActivityLogService.AddEntry("Navigated to Activity Log");
+                    await Task.Delay(3000);
+                    OnRequestNavigateToActivityLog?.Invoke();
+                    UserQuestion = "";
+                    return;
+                }
 
                 // Detect keywords like "add a task"
                 if (UserQuestion.ToLower().Contains("add a task") || UserQuestion.ToLower().Contains("create a task"))
                 {
                     Messages.Add(new ChatMessage("Sure! Taking you to the Task Assistant now.", "Bot"));
-                    await Task.Delay(1000);
+                    ActivityLogService.AddEntry("Navigated to Task Assistant");
+                    await Task.Delay(3000);
                     OnRequestNavigateToTasks?.Invoke();
                     UserQuestion = "";
                     return;
@@ -62,7 +74,8 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 if (UserQuestion.ToLower().Contains("start quiz") || UserQuestion.ToLower().Contains("play game"))
                 {
                     Messages.Add(new ChatMessage("Sure! Taking you to the quiz now.", "Bot"));
-                    await Task.Delay(1000);
+                    ActivityLogService.AddEntry("Navigated to Quiz");
+                    await Task.Delay(3000);
                     OnRequestNavigateToQuiz?.Invoke();
                     UserQuestion = "";
                     return;
@@ -72,34 +85,37 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 var matchedTopic = _topicManager.MatchTopic(UserQuestion);
                 if (matchedTopic != null)
                 {
+                    // Standard answer matching
+                    string standardAnswer = _topicManager.GetStandardAnswer(matchedTopic, UserQuestion);
+                    if (!string.IsNullOrEmpty(standardAnswer))
+                    {
+                        Messages.Add(new ChatMessage(standardAnswer, "Bot"));
+                        ActivityLogService.AddEntry($"Bot replied: {standardAnswer}");
+                        UserQuestion = "";
+                        return;
+                    }
+
+                    // Tip detection
+                    if (UserQuestion.ToLower().Contains("tip") || UserQuestion.ToLower().Contains("advice"))
+                    {
+                        string tip = _topicManager.GetRandomTip(matchedTopic);
+                        Messages.Add(new ChatMessage($"💡 Tip: {tip}", "Bot"));
+                        ActivityLogService.AddEntry($"Bot replied: {tip}");
+                        UserQuestion = "";
+                        return;
+                    }
+
                     var response = _topicManager.GetTopicAnswer(matchedTopic, UserQuestion);
                     Messages.Add(new ChatMessage(response, "Bot"));
+                    ActivityLogService.AddEntry($"Bot replied: {response}");
                 }
                 else
                 {
                     Messages.Add(new ChatMessage("I didn't understand that topic. Try rephrasing.", "Bot"));
+                    ActivityLogService.AddEntry("Unmatched topic.");
                 }
 
                 UserQuestion = "";
-
-                // Tip detection
-                if (UserQuestion.ToLower().Contains("tip") || UserQuestion.ToLower().Contains("advice"))
-                {
-                    string tip = _topicManager.GetRandomTip(matchedTopic);
-                    Messages.Add(new ChatMessage($"💡 Tip: {tip}", "Bot"));
-                    UserQuestion = "";
-                    return;
-                }
-
-                // Standard answer matching
-                string standardAnswer = _topicManager.GetStandardAnswer(matchedTopic, UserQuestion);
-                if (!string.IsNullOrEmpty(standardAnswer))
-                {
-                    Messages.Add(new ChatMessage(standardAnswer, "Bot"));
-                    UserQuestion = "";
-                    return;
-                }
-
 
             });
 
@@ -199,6 +215,9 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
 
 
         public Action? OnRequestNavigateToQuiz { get; set; }
-      
+
+        public Action? OnRequestNavigateToActivityLog { get; set; }
+
+
     }
 }

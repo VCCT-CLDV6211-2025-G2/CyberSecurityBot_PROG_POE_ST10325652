@@ -85,6 +85,17 @@ namespace CyberSecurityBot_PROG_POE_ST10325652.ViewModels
                 CurrentView = new QuizView { DataContext = quizVM };
             };
 
+            sharedChatVM.OnRequestNavigateToActivityLog = () =>
+            {
+                var logVM = new ActivityLogViewModel();
+                logVM.OnRequestBackToChat = () =>
+                {
+                    CurrentView = new ChatView { DataContext = sharedChatVM };
+                };
+
+                CurrentView = new ActivityLogView { DataContext = logVM };
+            };
+
             CurrentView = new WelcomeView { DataContext = welcomeVM};
         }
 
